@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HYUGA - Dealer Sepeda</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f3f5f7;
+    color: #222;
+}
+
+header {
+    background: #123d2b;
+    color: white;
+    text-align: center;
+    padding: 25px;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 35px;
+}
+
+nav {
+    background: #09291c;
+    padding: 12px;
+    text-align: center;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    margin: 10px;
+    font-weight: bold;
+}
+
+.container {
+    padding: 20px;
+    max-width: 1100px;
+    margin: auto;
+}
+
+h2 {
+    color: #123d2b;
+    border-bottom: 2px solid #123d2b;
+    padding-bottom: 8px;
+}
+
+.products {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 18px;
+}
+
+.product {
+    background: white;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px #ccc;
+}
+
+.product img {
+    width: 100%;
+    height: 160px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.product h3 {
+    margin-bottom: 5px;
+}
+
+.price {
+    color: #137b42;
+    font-weight: bold;
+}
+
+button {
+    background: #137b42;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-top: 8px;
+}
+
+button:hover {
+    background: #09552b;
+}
+
+input, select, textarea {
+    width: 100%;
+    padding: 11px;
+    margin: 7px 0 14px;
+    border: 1px solid #bbb;
+    border-radius: 5px;
+}
+
+form, .panel {
+    background: white;
+    padding: 18px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 8px #ddd;
+}
+
+footer {
+    background: #09291c;
+    color: white;
+    text-align: center;
+    padding: 20px;
+    margin-top: 30px;
+}
+
+.info {
+    background: white;
+    padding: 18px;
+    border-radius: 10px;
+    line-height: 1.8;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>HYUGA</h1>
+    <p>Dealer Sepeda Terpercaya dan Berkualitas</p>
+</header>
+
+<nav>
+    <a href="#beranda">Beranda</a>
+    <a href="#produk">Produk</a>
+    <a href="#tambah">Tambah Produk</a>
+    <a href="#pemesanan">Pemesanan</a>
+    <a href="#kontak">Kontak</a>
+</nav>
+
+<div class="container">
+
+<section id="beranda">
+    <h2>Selamat Datang di HYUGA</h2>
+    <p>
+        HYUGA menyediakan berbagai jenis sepeda dengan kualitas
+        terbaik dan harga yang bersahabat. Tersedia sepeda gunung,
+        sepeda lipat, sepeda BMX, dan sepeda anak.
+    </p>
+</section>
+
+<section id="produk">
+    <h2>Daftar Produk Sepeda</h2>
+    <div class="products" id="daftarProduk"></div>
+</section>
+
+<section id="tambah">
+    <h2>Tambah Produk</h2>
+    <form id="formProduk">
+        <label>Nama Sepeda</label>
+        <input id="namaProduk" required placeholder="Contoh: Sepeda Gunung">
+
+        <label>Harga</label>
+        <input id="hargaProduk" type="number" min="1" required>
+
+        <label>Spesifikasi</label>
+        <textarea id="spesifikasiProduk" required></textarea>
+
+        <label>Kondisi</label>
+        <select id="kondisiProduk">
+            <option>Baru</option>
+            <option>Bekas</option>
+        </select>
+
+        <label>Jenis Sepeda</label>
+        <select id="jenisProduk">
+            <option>Sepeda Gunung</option>
+            <option>Sepeda Lipat</option>
+            <option>Sepeda BMX</option>
+            <option>Sepeda Anak</option>
+            <option>Sepeda Balap</option>
+            <option>Lainnya</option>
+        </select>
+
+        <button type="submit">Tambah Produk</button>
+    </form>
+</section>
+
+<section id="simulasi">
+    <h2>Simulasi Pembayaran</h2>
+    <div class="panel">
+        <label>Harga Sepeda (Rp)</label>
+        <input type="number" id="hargaBayar" placeholder="Masukkan harga sepeda">
+
+        <label>Metode Pembayaran</label>
+        <select id="metodeBayar" onchange="ubahMetode()">
+            <option value="Tunai">Tunai</option>
+            <option value="Cicilan">Cicilan</option>
+        </select>
+
+        <div id="pilihanCicilan" style="display:none">
+            <label>Uang Muka (Rp)</label>
+            <input type="number" id="uangMuka" value="500000">
+
+            <label>Lama Cicilan</label>
+            <select id="tenor">
+                <option value="6">6 Bulan</option>
+                <option value="12">12 Bulan</option>
+                <option value="18">18 Bulan</option>
+                <option value="24">24 Bulan</option>
+            </select>
+            <p>Simulasi menggunakan perkiraan bunga tetap 1% per bulan.</p>
+        </div>
+
+        <button onclick="hitungPembayaran()">Hitung Pembayaran</button>
+        <h3 id="hasilPembayaran"></h3>
+    </div>
+</section>
+
+<section id="pemesanan">
+    <h2>Formulir Pemesanan</h2>
+    <form id="formPesanan">
+        <label>Nama Lengkap</label>
+        <input id="namaPembeli" required>
+
+        <label>Nomor HP</label>
+        <input id="nomorPembeli" type="tel" required>
+
+        <label>Alamat</label>
+        <textarea id="alamatPembeli" required></textarea>
+
+        <label>Nama Sepeda yang Dipesan</label>
+        <input id="sepedaPesanan" required>
+
+        <label>Metode Pembayaran</label>
+        <select id="pembayaranPesanan">
+            <option>Tunai</option>
+            <option>Cicilan</option>
+            <option>Transfer BRI</option>
+            <option>Transfer BSI</option>
+            <option>Transfer BCA</option>
+            <option>Transfer BJB</option>
+        </select>
+
+        <button type="submit">Pesan Melalui WhatsApp</button>
+    </form>
+</section>
+
+<section id="kontak">
+    <h2>Informasi Dealer</h2>
+    <div class="info">
+        <p><b>Nama Dealer:</b> HYUGA</p>
+        <p><b>Alamat:</b> Jl. HZ Mustofa Nomor 8</p>
+        <p><b>Jam Buka:</b> 08.00–17.00 WIB</p>
+        <p><b>WhatsApp:</b> 087827712715</p>
+        <p><b>Pembelian langsung:</b> Silakan datang ke dealer HYUGA.</p>
+        <p><b>Transfer:</b> BRI, BSI, BCA, dan BJB. Silakan konfirmasi nomor rekening resmi kepada dealer.</p>
+    </div>
+</section>
+
+</div>
+
+<footer>
+    <p>&copy; 2026 HYUGA Dealer Sepeda</p>
+    <p>Terima kasih telah berbelanja di HYUGA!</p>
+</footer>
+
+<script>
+let produk = [
+    {
+        nama: "Sepeda Gunung",
+        harga: 2500000,
+        spesifikasi: "Rangka kuat, 21 speed",
+        kondisi: "Baru",
+        jenis: "Sepeda Gunung"
+    },
+    {
+        nama: "Sepeda Lipat",
+        harga: 1800000,
+        spesifikasi: "Praktis dan mudah dilipat",
+        kondisi: "Baru",
+        jenis: "Sepeda Lipat"
+    },
+    {
+        nama: "Sepeda BMX",
+        harga: 1500000,
+        spesifikasi: "Rangka kokoh dan sporty",
+        kondisi: "Baru",
+        jenis: "Sepeda BMX"
+    }
+];
+
+function rupiah(angka) {
+    return "Rp " + Number(angka).toLocaleString("id-ID");
+}
+
+function tampilkanProduk() {
+    let daftar = document.getElementById("daftarProduk");
+    daftar.innerHTML = "";
+
+    produk.forEach((item, index) => {
+        daftar.innerHTML += `
+            <div class="product">
+                <h3>${aman(item.nama)}</h3>
+                <p class="price">${rupiah(item.harga)}</p>
+                <p><b>Jenis:</b> ${aman(item.jenis)}</p>
+                <p><b>Spesifikasi:</b> ${aman(item.spesifikasi)}</p>
+                <p><b>Kondisi:</b> ${aman(item.kondisi)}</p>
+                <button onclick="pilihProduk(${index})">Pesan Produk</button>
+                <button onclick="hapusProduk(${index})">Hapus</button>
+            </div>
+        `;
+    });
+}
+
+function aman(teks) {
+    return String(teks).replace(/[&<>"']/g, function(huruf) {
+        return {
+            "&": "&amp;",
+            "<": "&lt;",
+            ">": "&gt;",
+            '"': "&quot;",
+            "'": "&#39;"
+        }[huruf];
+    });
+}
+
+function pilihProduk(index) {
+    document.getElementById("sepedaPesanan").value = produk[index].nama;
+    document.getElementById("hargaBayar").value = produk[index].harga;
+    document.getElementById("pemesanan").scrollIntoView();
+}
+
+function hapusProduk(index) {
+    if (confirm("Yakin ingin menghapus produk ini?")) {
+        produk.splice(index, 1);
+        tampilkanProduk();
+    }
+}
+
+document.getElementById("formProduk").addEventListener("submit", function(e) {
+    e.preventDefault();
+
+    produk.push({
+        nama: document.getElementById("namaProduk").value,
+        harga: Number(document.getElementById("hargaProduk").value),
+        spesifikasi: document.getElementById("spesifikasiProduk").value,
+        kondisi: document.getElementById("kondisiProduk").value,
+        jenis: document.getElementById("jenisProduk").value
+    });
+
+    tampilkanProduk();
+    this.reset();
+    alert("Produk berhasil ditambahkan!");
+});
+
+function ubahMetode() {
+    let metode = document.getElementById("metodeBayar").value;
+    document.getElementById("pilihanCicilan").style.display =
+        metode === "Cicilan" ? "block" : "none";
+}
+
+function hitungPembayaran() {
+    let harga = Number(document.getElementById("hargaBayar").value);
+    let metode = document.getElementById("metodeBayar").value;
+    let hasil = document.getElementById("hasilPembayaran");
+
+    if (!harga || harga <= 0) {
+        hasil.innerText = "Masukkan harga sepeda yang benar.";
+        return;
+    }
+
+    if (metode === "Tunai") {
+        hasil.innerText = "Total pembayaran: " + rupiah(harga);
+        return;
+    }
+
+    let dp = Number(document.getElementById("uangMuka").value);
+    let tenor = Number(document.getElementById("tenor").value);
+
+    if (dp < 0 || dp >= harga) {
+        hasil.innerText = "Uang muka harus kurang dari harga sepeda.";
+        return;
+    }
+
+    let pokok = harga - dp;
+    let bunga = pokok * 0.01 * tenor;
+    let total = pokok + bunga;
+    let cicilan = total / tenor;
+
+    hasil.innerText =
+        "Uang muka: " + rupiah(dp) +
+        " | Total cicilan: " + rupiah(total) +
+        " | Per bulan: " + rupiah(Math.ceil(cicilan));
+}
+
+document.getElementById("formPesanan").addEventListener("submit", function(e) {
+    e.preventDefault();
+
+    let nama = document.getElementById("namaPembeli").value;
+    let nomor = document.getElementById("nomorPembeli").value;
+    let alamat = document.getElementById("alamatPembeli").value;
+    let sepeda = document.getElementById("sepedaPesanan").value;
+    let bayar = document.getElementById("pembayaranPesanan").value;
+
+    let pesan =
+        "Halo HYUGA, saya ingin memesan sepeda.%0A%0A" +
+        "Nama: " + encodeURIComponent(nama) + "%0A" +
+        "Nomor HP: " + encodeURIComponent(nomor) + "%0A" +
+        "Alamat: " + encodeURIComponent(alamat) + "%0A" +
+        "Sepeda: " + encodeURIComponent(sepeda) + "%0A" +
+        "Pembayaran: " + encodeURIComponent(bayar);
+
+    window.open("https://wa.me/6287827712715?text=" + pesan, "_blank");
+});
+
+tampilkanProduk();
+</script>
+
+</body>
+              </html>
